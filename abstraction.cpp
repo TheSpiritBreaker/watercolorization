@@ -18,16 +18,11 @@
  */
 #include "abstraction.h"
 #include <algorithm>
-#include <opencv2/hfs.hpp>
+
 #include <omp.h>
 using namespace std;
 const double saliencyThreshold = 1e-8;
-void segmentation(const Mat & img, Mat & segmentimg)
-{
-	segmentimg = hfs::HfsSegment::create(img.rows, img.cols, 0.01f, 500, 0.01f, 500, 0.3f, 40, 60)->performSegmentCpu(img, true);
-	imshow("segmentimg", segmentimg);
-	waitKey(0);
-}
+
 
 void abstraction(Mat & img, const Mat & segmentimg, const Mat & saliencyDistanceField)
 {
@@ -62,7 +57,7 @@ void abstraction(Mat & img, const Mat & segmentimg, const Mat & saliencyDistance
 	img = outputImg;
 	addWeighted(img, 0.4, segmentimg, 0.6, 0, img);
 	
-	for (int i = 0; i < 5; ++i) //¸ù¾ÝÂÛÎÄ£¬×öÁ¬ÐøµÄ¿ª±ÕÔËËã
+	for (int i = 0; i < 5; ++i) //æ ¹æ®è®ºæ–‡ï¼Œåšè¿žç»­çš„å¼€é—­è¿ç®—
 	{
 		morphologyEx(img, img, MORPH_OPEN, Mat());
 		morphologyEx(img, img, MORPH_CLOSE, Mat());
